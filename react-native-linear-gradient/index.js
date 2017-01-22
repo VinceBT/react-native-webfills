@@ -5,8 +5,8 @@ import { View } from 'react-native';
 export default class LinearGradient extends Component {
 
   static propTypes = {
-    start: PropTypes.arrayOf(PropTypes.number).isRequired,
-    end: PropTypes.arrayOf(PropTypes.number).isRequired,
+    start: PropTypes.shape({x: PropTypes.number, y: PropTypes.number}).isRequired,
+    end: PropTypes.shape({x: PropTypes.number, y: PropTypes.number}).isRequired,
     locations: PropTypes.arrayOf(PropTypes.number),
     colors: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.any,
@@ -15,9 +15,9 @@ export default class LinearGradient extends Component {
   // https://www.npmjs.com/package/react-style-proptype
   render() {
     const { start, end, locations, colors, style, children, ...otherProps } = this.props;
-    const vec = [end[0] - start[0], -(end[1] - start[1])];
+    const vec = [end.x - start.x, -(end.y - start.y)];
     const angleRad = Math.atan(vec[1] / vec[0]);
-    const angleDeg = Math.round((angleRad * 180) / Math.PI) - 90;
+    const angleDeg = Math.round((angleRad * 180) / Math.PI) +180;
     const realLocations = locations || colors.map((color, i) => (1 / (colors.length - 1)) * i);
     const colorStrings = colors.map((color, i) => `${color} ${Math.round(realLocations[i] * 100)}%`).join(', ');
     return (
