@@ -5,14 +5,13 @@ import { View } from 'react-native';
 export default class LinearGradient extends Component {
 
   static propTypes = {
-    start: PropTypes.shape({x: PropTypes.number, y: PropTypes.number}).isRequired,
-    end: PropTypes.shape({x: PropTypes.number, y: PropTypes.number}).isRequired,
+    start: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }).isRequired,
+    end: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }).isRequired,
     locations: PropTypes.arrayOf(PropTypes.number),
     colors: PropTypes.arrayOf(PropTypes.string).isRequired,
-    style: PropTypes.any,
-    children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
   };
-  // https://www.npmjs.com/package/react-style-proptype
+
   render() {
     const { start, end, locations, colors, style, children, ...otherProps } = this.props;
     const vec = [end.x - start.x, -(end.y - start.y)];
