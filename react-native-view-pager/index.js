@@ -1,6 +1,6 @@
 // @flow
-import React, {Component, PropTypes} from "react";
-import {Animated} from "react-native";
+import React, { Component, PropTypes } from 'react';
+import { Animated } from 'react-native';
 
 export default class ViewPager extends Component {
 
@@ -19,12 +19,12 @@ export default class ViewPager extends Component {
   }
 
   setPage = (i) => {
-    this.setState({activePage: i});
-  }
+    this.setState({ activePage: i });
+  };
 
   setPageWithoutAnimation = (i) => {
-    this.setState({activePage: i});
-  }
+    this.setState({ activePage: i });
+  };
 
   render() {
     return (
