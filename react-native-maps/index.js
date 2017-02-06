@@ -11,10 +11,12 @@ export default class MapView extends Component {
   componentDidMount() {
     const domNode = ReactDOM.findDOMNode(this._mainView);
     const { initialRegion } = this.props;
-    const map = new google.maps.Map(domNode, {
-      center: { lat: initialRegion.lat, lng: initialRegion.lng },
-      zoom: 8,
-    });
+    const mapOptions = {};
+    if (initialRegion) {
+      mapOptions.center = { lat: initialRegion.lat, lng: initialRegion.lng };
+      mapOptions.zoom = 8;
+    }
+    const map = new google.maps.Map(domNode, mapOptions);
   }
 
   _mainView: ?View = null;
