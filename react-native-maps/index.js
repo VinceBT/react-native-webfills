@@ -18,6 +18,7 @@ export default class MapView extends Component {
     const mapOptions = {
       center: { lat: 0, lng: 0 },
       zoom: 2,
+      disableDefaultUI: true,
     };
     if (initialRegion) {
       const { latitude, longitude, latitudeDelta, longitudeDelta } = initialRegion;
@@ -36,6 +37,9 @@ export default class MapView extends Component {
         title: title,
       });
       marker.setMap(map);
+    });
+    map.addListener('drag', (e) => {
+      console.log(e);
     });
   }
 
