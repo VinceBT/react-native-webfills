@@ -12,6 +12,18 @@ export class Marker extends Component {
 
 export default class MapView extends Component {
 
+  static propTypes = {
+    initialRegion: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      latitudeDelta: PropTypes.number,
+      longitudeDelta: PropTypes.number,
+    }),
+    onRegionChange: PropTypes.func,
+    onRegionChangeComplete: PropTypes.func,
+    style: PropTypes.any,
+  };
+
   componentDidMount() {
     const domNode = ReactDOM.findDOMNode(this._mainView);
     const { initialRegion } = this.props;
@@ -34,19 +46,34 @@ export default class MapView extends Component {
       const title = child.props.title;
       const marker = new google.maps.Marker({
         position: { lat: coord.latitude, lng: coord.longitude },
-        title: title,
+        title,
       });
       marker.setMap(map);
     });
-    map.addListener('drag', (e) => {
-      console.log(e);
+    map.addListener('drag', () => {
+      const center = map.getCenter();
+      this._currentRegion = {
+        latitude: center.lat(),
+        longitude: center.lng(),
+        latitudeDelta: 0.05, // TODO: Fix how we get that information
+        longitudeDelta: 0.05, // TODO: Fix how we get that information
+      };
+      if (this.props.onRegionChange) {
+        this.props.onRegionChange(this._currentRegion);
+      }
     });
+    if (this.props.onRegionChangeComplete) {
+      map.addListener('idle', () => {
+        if (this._currentRegion) this.props.onRegionChangeComplete(this._currentRegion);
+      });
+    }
   }
 
+  _currentRegion: Object = null;
   _mainView: ?View = null;
 
   render() {
-    const { initialRegion, style, ...otherProps } = this.props;
+    const { initialRegion, onRegionChange, onRegionChangeComplete, style, ...otherProps } = this.props;
     return (
       <View
         ref={c => { this._mainView = c; }}
