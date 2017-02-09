@@ -24,6 +24,13 @@ export default class ViewPager extends Component {
     this._animValue = new Animated.Value(props.initialPage);
   }
 
+  componentDidMount() {
+    addEventListener('resize', () => {
+      console.log('hey')
+      this.forceUpdate();
+    });
+  }
+
   setPage = (i) => {
     Animated.timing(this._animValue, {
       duration: 300,
