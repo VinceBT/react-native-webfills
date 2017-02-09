@@ -22,6 +22,7 @@ export default class MapView extends Component {
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
     customMapStyle: PropTypes.array,
+    children: PropTypes.arrayOf(PropTypes.node),
     style: PropTypes.any,
   };
 
@@ -41,9 +42,9 @@ export default class MapView extends Component {
         mapOptions.zoom = Math.max(0, Math.min(20, Math.floor(Math.min(latitudeDelta, longitudeDelta) * 300)));
       }
     }
-    const map = new google.maps.Map(domNode, mapOptions);
+    this._map = new google.maps.Map(domNode, mapOptions);
     if (customMapStyle) {
-      map.setOptions({styles: customMapStyle});
+      this._map.setOptions({ styles: customMapStyle });
     }
     this.props.children.forEach(child => {
       const coord = child.props.coordinate;
@@ -52,10 +53,11 @@ export default class MapView extends Component {
         position: { lat: coord.latitude, lng: coord.longitude },
         title,
       });
-      marker.setMap(map);
+      marker.setMap(this._map);
+      this._currentMarkers.set(child.key, marker);
     });
-    map.addListener('drag', () => {
-      const center = map.getCenter();
+    this._map.addListener('drag', () => {
+      const center = this._map.getCenter();
       this._currentRegion = {
         latitude: center.lat(),
         longitude: center.lng(),
@@ -67,12 +69,48 @@ export default class MapView extends Component {
       }
     });
     if (this.props.onRegionChangeComplete) {
-      map.addListener('idle', () => {
+      this._map.addListener('idle', () => {
         if (this._currentRegion) this.props.onRegionChangeComplete(this._currentRegion);
       });
     }
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    const newCurrentChildren = new Map();
+    nextProps.children.forEach(child => {
+      const childKey = child.key;
+      if (this._currentMarkers.has(childKey)) {
+        newCurrentChildren.set(childKey, this._currentMarkers.get(childKey));
+        this._currentMarkers.delete(childKey);
+      } else {
+        const coord = child.props.coordinate;
+        const title = child.props.title;
+        const marker = new google.maps.Marker({
+          position: { lat: coord.latitude, lng: coord.longitude },
+          title,
+        });
+        newCurrentChildren.set(child.key, marker);
+        marker.setMap(this._map);
+      }
+    });
+    for (const [key, marker] of this._currentMarkers) {
+      marker.setMap(null);
+    }
+    this._currentMarkers = newCurrentChildren;
+  }
+
+  animateToCoordinate(coordinate, duration) {
+    this._map.setCenter(new google.maps.LatLng(coordinate.latitude, coordinate.longitude));
+    this._map.setZoom(16);
+  }
+
+  animateToRegion(region, duration) {
+    this._map.setCenter(new google.maps.LatLng(region.latitude, region.longitude));
+    this._map.setZoom(16);
+  }
+
+  _map = null;
+  _currentMarkers = new Map();
   _currentRegion: Object = null;
   _mainView: ?View = null;
 
