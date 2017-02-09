@@ -21,12 +21,13 @@ export default class MapView extends Component {
     }),
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
+    customMapStyle: PropTypes.array,
     style: PropTypes.any,
   };
 
   componentDidMount() {
     const domNode = ReactDOM.findDOMNode(this._mainView);
-    const { initialRegion } = this.props;
+    const { initialRegion, customMapStyle } = this.props;
     const mapOptions = {
       center: { lat: 0, lng: 0 },
       zoom: 2,
@@ -41,6 +42,9 @@ export default class MapView extends Component {
       }
     }
     const map = new google.maps.Map(domNode, mapOptions);
+    if (customMapStyle) {
+      map.setOptions({styles: customMapStyle});
+    }
     this.props.children.forEach(child => {
       const coord = child.props.coordinate;
       const title = child.props.title;
@@ -73,7 +77,7 @@ export default class MapView extends Component {
   _mainView: ?View = null;
 
   render() {
-    const { initialRegion, onRegionChange, onRegionChangeComplete, style, ...otherProps } = this.props;
+    const { initialRegion, onRegionChange, onRegionChangeComplete, customMapStyle, style, ...otherProps } = this.props;
     return (
       <View
         ref={c => { this._mainView = c; }}
