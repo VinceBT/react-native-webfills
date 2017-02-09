@@ -43,7 +43,7 @@ export default class MapView extends Component {
     }
     const map = new google.maps.Map(domNode, mapOptions);
     if (customMapStyle) {
-      map.setOptions({styles: customMapStyle});
+      map.setOptions({ styles: customMapStyle });
     }
     this.props.children.forEach(child => {
       const coord = child.props.coordinate;
