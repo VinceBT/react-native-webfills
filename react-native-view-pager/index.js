@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, PropTypes } from 'react';
-import { Animated, Dimensions } from 'react-native';
+import { View, Animated, Dimensions } from 'react-native';
 
 export default class ViewPager extends Component {
 
@@ -26,7 +26,7 @@ export default class ViewPager extends Component {
 
   componentDidMount() {
     addEventListener('resize', () => {
-      console.log('hey')
+      console.log('hey');
       this.forceUpdate();
     });
   }
@@ -60,7 +60,9 @@ export default class ViewPager extends Component {
             outputRange: [0, -deviceWidth * nbChildren],
           }) }],
         }}>
-        {this.props.children}
+        {this.props.children.map((child, i) => (
+          <View key={i} style={{ width: deviceWidth }}>{child}</View>
+        ))}
       </Animated.View>
     );
   }
