@@ -21,6 +21,7 @@ export default class MapView extends Component {
     }),
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
+    onPress: PropTypes.func,
     customMapStyle: PropTypes.array,
     children: PropTypes.arrayOf(PropTypes.node),
     style: PropTypes.any,
@@ -115,7 +116,7 @@ export default class MapView extends Component {
   _mainView: ?View = null;
 
   render() {
-    const { initialRegion, onRegionChange, onRegionChangeComplete, customMapStyle, style, ...otherProps } = this.props;
+    const { initialRegion, onRegionChange, onRegionChangeComplete, onPress, customMapStyle, style, ...otherProps } = this.props;
     return (
       <View
         ref={c => { this._mainView = c; }}
