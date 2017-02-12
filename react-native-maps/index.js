@@ -1,14 +1,12 @@
 /*
  * @flow
- * eslint no-undef: 0
  */
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { View, Text } from 'react-native';
+import StylePropTypes from 'react-style-proptype';
 
-export class Marker extends Component {
-
-}
+export const Marker = () => {};
 
 export default class MapView extends Component {
 
@@ -22,9 +20,9 @@ export default class MapView extends Component {
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
     onPress: PropTypes.func,
-    customMapStyle: PropTypes.array,
+    customMapStyle: PropTypes.arrayOf(PropTypes.object),
     children: PropTypes.arrayOf(PropTypes.node),
-    style: PropTypes.any,
+    style: StylePropTypes.supportingArrays,
   };
 
   componentDidMount() {
