@@ -59,11 +59,13 @@ export default class MapView extends Component {
     });
     this._map.addListener('drag', () => {
       const center = this._map.getCenter();
+      const northEast = this._map.getBounds().getNorthEast();
+      const southWest = this._map.getBounds().getSouthWest();
       this._currentRegion = {
         latitude: center.lat(),
         longitude: center.lng(),
-        latitudeDelta: 0.05, // TODO: Fix how we get that information
-        longitudeDelta: 0.05, // TODO: Fix how we get that information
+        latitudeDelta: Math.abs(northEast.lat() - southWest.lat()),
+        longitudeDelta: Math.abs(northEast.lng() - southWest.lng()),
       };
       if (this.props.onRegionChange) {
         this.props.onRegionChange(this._currentRegion);
