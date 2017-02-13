@@ -80,12 +80,15 @@ export default class MapView extends Component {
     const newCurrentChildren = new Map();
     nextProps.children.forEach(child => {
       const childKey = child.key;
+      const coord = child.props.coordinate;
+      const title = child.props.title;
       if (this._currentMarkers.has(childKey)) {
-        newCurrentChildren.set(childKey, this._currentMarkers.get(childKey));
+        const keptChild = this._currentMarkers.get(childKey);
+        keptChild.setPosition({ lat: coord.latitude, lng: coord.longitude });
+        keptChild.setTitle(title);
+        newCurrentChildren.set(childKey, keptChild);
         this._currentMarkers.delete(childKey);
       } else {
-        const coord = child.props.coordinate;
-        const title = child.props.title;
         const marker = new google.maps.Marker({
           position: { lat: coord.latitude, lng: coord.longitude },
           title,
