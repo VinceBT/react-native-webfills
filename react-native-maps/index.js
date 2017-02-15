@@ -20,6 +20,7 @@ export default class MapView extends Component {
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
     onPress: PropTypes.func,
+    onPanDrag: PropTypes.func,
     customMapStyle: PropTypes.arrayOf(PropTypes.object),
     children: PropTypes.arrayOf(PropTypes.node),
     style: StylePropTypes.supportingArrays,
@@ -65,9 +66,8 @@ export default class MapView extends Component {
         latitudeDelta: Math.abs(northEast.lat() - southWest.lat()),
         longitudeDelta: Math.abs(northEast.lng() - southWest.lng()),
       };
-      if (this.props.onRegionChange) {
-        this.props.onRegionChange(this._currentRegion);
-      }
+      this.props.onRegionChange && this.props.onRegionChange(this._currentRegion);
+      this.props.onPanDrag && this.props.onPanDrag();
     });
     if (this.props.onRegionChangeComplete) {
       this._map.addListener('idle', () => {
@@ -119,7 +119,7 @@ export default class MapView extends Component {
   _mainView: ?View = null;
 
   render() {
-    const { initialRegion, onRegionChange, onRegionChangeComplete, onPress, customMapStyle, style, ...otherProps } = this.props;
+    const { initialRegion, onRegionChange, onRegionChangeComplete, onPanDrag, onPress, customMapStyle, style, ...otherProps } = this.props;
     return (
       <View
         ref={c => { this._mainView = c; }}
