@@ -95,7 +95,6 @@ export default class MapView extends Component {
         newCurrentChildren.set(childKey, marker);
         marker.setMap(this._map);
         marker.addListener('click', () => {
-          this._map.setCenter(new google.maps.LatLng(coordinate.latitude, coordinate.longitude));
           onPress && onPress();
         });
       }
