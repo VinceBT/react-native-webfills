@@ -21,6 +21,16 @@ export default class MapView extends Component {
     onRegionChangeComplete: PropTypes.func,
     onPress: PropTypes.func,
     onPanDrag: PropTypes.func,
+    showsUserLocation: PropTypes.bool,
+    showsMyLocationButton: PropTypes.bool,
+    showsPointsOfInterest: PropTypes.bool,
+    showsCompass: PropTypes.bool,
+    showsScale: PropTypes.bool,
+    showsBuildings: PropTypes.bool,
+    showsTraffic: PropTypes.bool,
+    showsIndoors: PropTypes.bool,
+    toolbarEnabled: PropTypes.bool,
+    moveOnMarkerPress: PropTypes.bool,
     customMapStyle: PropTypes.arrayOf(PropTypes.object),
     children: PropTypes.arrayOf(PropTypes.node),
     style: StylePropTypes.supportingArrays,
@@ -121,7 +131,25 @@ export default class MapView extends Component {
   _mainView: ?View = null;
 
   render() {
-    const { initialRegion, onRegionChange, onRegionChangeComplete, onPanDrag, onPress, customMapStyle, style, ...otherProps } = this.props;
+    const {
+      initialRegion,
+      onRegionChange,
+      onRegionChangeComplete,
+      onPanDrag,
+      onPress,
+      customMapStyle,
+      showsUserLocation,
+      showsMyLocationButton,
+      showsPointsOfInterest,
+      showsCompass,
+      showsScale,
+      showsBuildings,
+      showsTraffic,
+      showsIndoors,
+      toolbarEnabled,
+      moveOnMarkerPress,
+      style,
+      ...otherProps } = this.props;
     return (
       <View
         ref={c => { this._mainView = c; }}
