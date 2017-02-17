@@ -58,13 +58,15 @@ export default class MapView extends Component {
       this._map.setOptions({ styles: customMapStyle });
     }
     this.props.children.forEach(child => {
-      const coord = child.props.coordinate;
-      const title = child.props.title;
+      const { coordinate, title, onPress } = child.props;
       const marker = new google.maps.Marker({
-        position: { lat: coord.latitude, lng: coord.longitude },
+        position: { lat: coordinate.latitude, lng: coordinate.longitude },
         title,
       });
       marker.setMap(this._map);
+      marker.addListener('click', () => {
+        onPress && onPress();
+      });
       this._currentMarkers.set(child.key, marker);
     });
     this._map.addListener('drag', () => {
