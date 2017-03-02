@@ -53,6 +53,11 @@ export default class MapView extends Component {
         mapOptions.zoom = Math.max(0, Math.min(20, Math.floor(Math.min(latitudeDelta, longitudeDelta) * 300)));
       }
     }
+    domNode.onresize = () => {
+      const center = this._map.getCenter();
+      google.maps.event.trigger(this._map, 'resize');
+      this._map.setCenter(center);
+    };
     this._map = new google.maps.Map(domNode, mapOptions);
     if (customMapStyle) {
       this._map.setOptions({ styles: customMapStyle });
