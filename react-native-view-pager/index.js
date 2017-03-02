@@ -33,7 +33,7 @@ export default class ViewPager extends Component {
 
   setPage = (i) => {
     Animated.timing(this._animValue, {
-      duration: 300,
+      duration: 200,
       toValue: i,
     }).start();
   };
