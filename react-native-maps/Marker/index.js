@@ -58,10 +58,10 @@ export default class Marker extends Component {
         }
 
         const point = this.getProjection().fromLatLngToDivPixel(this.latlng);
-
+        console.log(div)
         if (point) {
-          div.style.left = `${point.x}px`;
-          div.style.top = `${point.y}px`;
+          div.style.left = `${point.x-(div.offsetWidth/2)}px`;
+          div.style.top = `${point.y-(div.offsetHeight/2)}px`;
         }
       };
       CustomMarker.prototype.remove = function () {
