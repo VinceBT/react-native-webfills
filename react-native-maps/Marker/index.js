@@ -4,6 +4,7 @@
  * @flow
  */
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { View, Text } from 'react-native';
 
 export default class Marker extends Component {
@@ -22,6 +23,7 @@ export default class Marker extends Component {
     const { coordinate, title, onPress, children } = this.props;
     const { latitude, longitude } = coordinate;
     let marker = null;
+    console.log(children);
     if (children) {
       const CustomMarker = function (latlng, map, args) {
         this.latlng = latlng;
@@ -41,9 +43,6 @@ export default class Marker extends Component {
 
           div.style.position = 'absolute';
           div.style.cursor = 'pointer';
-          div.style.width = '20px';
-          div.style.height = '20px';
-          div.style.background = 'blue';
 
           if (typeof (self.args.marker_id) !== 'undefined') {
             div.dataset.marker_id = self.args.marker_id;
@@ -54,6 +53,7 @@ export default class Marker extends Component {
           });
 
           const panes = this.getPanes();
+          ReactDOM.render(children, div);
           panes.overlayImage.appendChild(div);
         }
 
@@ -64,24 +64,20 @@ export default class Marker extends Component {
           div.style.top = `${point.y}px`;
         }
       };
-
       CustomMarker.prototype.remove = function () {
         if (this.div) {
           this.div.parentNode.removeChild(this.div);
           this.div = null;
         }
       };
-
       CustomMarker.prototype.getPosition = function () {
         return this.latlng;
       };
-
       marker = new CustomMarker(new google.maps.LatLng(latitude, longitude), this.props.gMap, {});
-
     } else {
       marker = new google.maps.Marker({
         position: { lat: latitude, lng: longitude },
-        map: this._map,
+        map: this.props.gMap,
         title,
       });
     }
