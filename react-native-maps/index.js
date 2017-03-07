@@ -6,7 +6,7 @@ import { View, Text } from 'react-native';
 import MapView from './MapView';
 import Marker from './Marker';
 
-MapView.Marker = MapView;
+MapView.Marker = Marker;
 
 export default MapView;
 export { Marker };

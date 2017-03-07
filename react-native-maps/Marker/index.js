@@ -23,7 +23,6 @@ export default class Marker extends Component {
     const { coordinate, title, onPress, children } = this.props;
     const { latitude, longitude } = coordinate;
     let marker = null;
-    console.log(children);
     if (children) {
       const CustomMarker = function (latlng, map, args) {
         this.latlng = latlng;
@@ -53,12 +52,12 @@ export default class Marker extends Component {
           });
 
           const panes = this.getPanes();
-          ReactDOM.render(children, div);
+          ReactDOM.render(children[0] || children, div);
           panes.overlayImage.appendChild(div);
         }
 
         const point = this.getProjection().fromLatLngToDivPixel(this.latlng);
-        console.log(div)
+
         if (point) {
           div.style.left = `${point.x-(div.offsetWidth/2)}px`;
           div.style.top = `${point.y-(div.offsetHeight/2)}px`;
