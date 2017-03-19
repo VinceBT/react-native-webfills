@@ -53,7 +53,6 @@ export default class MapView extends Component {
       }
     }
     domNode.onresize = () => {
-      console.log('yo')
       const center = this._map.getCenter();
       google.maps.event.trigger(this._map, 'resize');
       this._map.setCenter(center);

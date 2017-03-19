@@ -25,8 +25,7 @@ export default class ViewPager extends Component {
   }
 
   componentDidMount() {
-    addEventListener('resize', () => {
-      console.log('hey');
+    window.addEventListener('resize', () => {
       this.forceUpdate();
     });
   }
