@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * global google document
  * eslint-env browser
@@ -19,10 +20,12 @@ export default class Marker extends Component {
     }),
   };
 
+  _marker = null;
+
   componentDidMount() {
     const { coordinate, title, onPress, children } = this.props;
     const { latitude, longitude } = coordinate;
-    let marker = null;
+    this._marker = null;
     if (children) {
       const CustomMarker = function (latlng, map, args) {
         this.latlng = latlng;
@@ -72,18 +75,22 @@ export default class Marker extends Component {
       CustomMarker.prototype.getPosition = function () {
         return this.latlng;
       };
-      marker = new CustomMarker(new google.maps.LatLng(latitude, longitude), this.props.gMap, {});
+      this._marker = new CustomMarker(new google.maps.LatLng(latitude, longitude), this.props.gMap, {});
     } else {
-      marker = new google.maps.Marker({
+      this._marker = new google.maps.Marker({
         position: { lat: latitude, lng: longitude },
         map: this.props.gMap,
         title,
       });
     }
     // marker is defined
-    marker.addListener('click', () => {
+    this._marker.addListener('click', () => {
       if (onPress) onPress();
     });
+  }
+
+  componentWillUnmount() {
+    this._marker.setMap(null);
   }
 
   render() { return null; }

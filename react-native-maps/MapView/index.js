@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 /*
  * global google ReactDOM
  * @flow
  */
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import StylePropTypes from 'react-style-proptype';
 
 export default class MapView extends Component {
@@ -48,9 +49,8 @@ export default class MapView extends Component {
       const { latitude, longitude, latitudeDelta, longitudeDelta } = initialRegion;
       if (latitude !== null) mapOptions.center.lat = latitude;
       if (longitude !== null) mapOptions.center.lng = longitude;
-      if (latitudeDelta !== null && longitudeDelta !== null) {
+      if (latitudeDelta !== null && longitudeDelta !== null)
         mapOptions.zoom = Math.max(0, Math.min(20, Math.floor(Math.min(latitudeDelta, longitudeDelta) * 300)));
-      }
     }
     domNode.onresize = () => {
       const center = this._map.getCenter();
@@ -58,9 +58,9 @@ export default class MapView extends Component {
       this._map.setCenter(center);
     };
     this._map = new google.maps.Map(domNode, mapOptions);
-    if (customMapStyle) {
+    if (customMapStyle)
       this._map.setOptions({ styles: customMapStyle });
-    }
+
     this._map.addListener('drag', () => {
       const center = this._map.getCenter();
       const northEast = this._map.getBounds().getNorthEast();
@@ -74,11 +74,11 @@ export default class MapView extends Component {
       if (this.props.onRegionChange) this.props.onRegionChange(this._currentRegion);
       if (this.props.onPanDrag) this.props.onPanDrag();
     });
-    if (this.props.onRegionChangeComplete) {
+    if (this.props.onRegionChangeComplete)
       this._map.addListener('idle', () => {
         if (this._currentRegion) this.props.onRegionChangeComplete(this._currentRegion);
       });
-    }
+
     this._updateMarkers(this.props.children);
   }
 
@@ -88,8 +88,8 @@ export default class MapView extends Component {
 
   _map = null;
   _currentMarkers = new Map();
-  _currentRegion: Object = null;
-  _mainView: ?View = null;
+  _currentRegion = null;
+  _mainView = null;
 
   animateToCoordinate(coordinate, duration) {
     this._map.setCenter(new google.maps.LatLng(coordinate.latitude, coordinate.longitude));
@@ -113,8 +113,7 @@ export default class MapView extends Component {
         keptChild.setTitle(title);
         newCurrentChildren.set(childKey, keptChild);
         this._currentMarkers.delete(childKey);
-      } else {
-        /*
+      } else if (!child.props.children) {
         const marker = new google.maps.Marker({
           position: { lat: coordinate.latitude, lng: coordinate.longitude },
           title,
@@ -124,12 +123,12 @@ export default class MapView extends Component {
         marker.addListener('click', () => {
           if (onPress) onPress();
         });
-        */
       }
     });
-    for (const [key, marker] of this._currentMarkers) {
+    console.log('after', this._currentMarkers.size, newCurrentChildren);
+    for (const [key, marker] of this._currentMarkers)
       marker.setMap(null);
-    }
+
     this._currentMarkers = newCurrentChildren;
   };
 
