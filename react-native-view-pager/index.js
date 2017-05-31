@@ -1,6 +1,6 @@
-// @flow
-import React, { Component, PropTypes } from 'react';
-import { View, Animated, Dimensions } from 'react-native';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Animated, Dimensions, View } from 'react-native';
 
 export default class ViewPager extends Component {
 
@@ -16,7 +16,7 @@ export default class ViewPager extends Component {
     initialPage: 0,
   };
 
-  constructor(props: Object) {
+  constructor(props) {
     super(props);
     this.state = {
       activePage: 0,
@@ -44,20 +44,23 @@ export default class ViewPager extends Component {
     }).start();
   };
 
-  _animValue: Animated.Value = null;
+  _animValue = null;
 
   render() {
     const nbChildren = this.props.children.length;
     const { width: deviceWidth } = Dimensions.get('window');
     return (
       <Animated.View
-        style={{ flex: 1,
+        style={{
+          flex: 1,
           flexDirection: 'row',
           width: deviceWidth * nbChildren,
-          transform: [{ translateX: this._animValue.interpolate({
-            inputRange: [0, nbChildren],
-            outputRange: [0, -deviceWidth * nbChildren],
-          }) }],
+          transform: [{
+            translateX: this._animValue.interpolate({
+              inputRange: [0, nbChildren],
+              outputRange: [0, -deviceWidth * nbChildren],
+            }),
+          }],
         }}>
         {this.props.children.map((child, i) => (
           <View key={i} style={{ width: deviceWidth }}>{child}</View>

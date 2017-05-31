@@ -1,9 +1,9 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef,react/no-find-dom-node */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { View } from 'react-native';
-import StylePropTypes from 'react-style-proptype';
 
 export default class MapView extends Component {
 
@@ -31,7 +31,7 @@ export default class MapView extends Component {
     moveOnMarkerPress: PropTypes.bool,
     customMapStyle: PropTypes.arrayOf(PropTypes.object),
     children: PropTypes.arrayOf(PropTypes.node),
-    style: StylePropTypes.supportingArrays,
+    style: PropTypes.any,
   };
 
   componentDidMount() {
@@ -76,15 +76,14 @@ export default class MapView extends Component {
         if (this._currentRegion) this.props.onRegionChangeComplete(this._currentRegion);
       });
 
-    this._updateMarkers(this.props.children);
+    this._updateChildren(this.props.children);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    this._updateMarkers(nextProps.children);
+    this._updateChildren(nextProps.children);
   }
 
   _map = null;
-  _currentMarkers = new Map();
   _currentRegion = null;
   _mainView = null;
 
@@ -98,33 +97,10 @@ export default class MapView extends Component {
     this._map.setZoom(16);
   }
 
-  _updateMarkers = (nextMarkers) => {
-    const newCurrentChildren = new Map();
-    nextMarkers.forEach(child => {
+  _updateChildren = (nextChildren) => {
+    nextChildren.forEach(child => {
       child.props.gMap = this._map;
-      const childKey = child.key;
-      const { coordinate, title, onPress } = child.props;
-      if (this._currentMarkers.has(childKey)) {
-        const keptChild = this._currentMarkers.get(childKey);
-        keptChild.setPosition({ lat: coordinate.latitude, lng: coordinate.longitude });
-        keptChild.setTitle(title);
-        newCurrentChildren.set(childKey, keptChild);
-        this._currentMarkers.delete(childKey);
-      } else if (!child.props.children) {
-        const marker = new google.maps.Marker({
-          position: { lat: coordinate.latitude, lng: coordinate.longitude },
-          title,
-        });
-        newCurrentChildren.set(childKey, marker);
-        marker.setMap(this._map);
-        marker.addListener('click', () => {
-          if (onPress) onPress();
-        });
-      }
     });
-    for (const [key, marker] of this._currentMarkers)
-      marker.setMap(null);
-    this._currentMarkers = newCurrentChildren;
   };
 
   render() {

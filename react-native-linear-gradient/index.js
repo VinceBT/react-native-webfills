@@ -1,5 +1,5 @@
-// @flow
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
 export default class LinearGradient extends Component {
@@ -16,7 +16,7 @@ export default class LinearGradient extends Component {
     const { start, end, locations, colors, style, children, ...otherProps } = this.props;
     const vec = [end.x - start.x, -(end.y - start.y)];
     const angleRad = Math.atan(vec[1] / vec[0]);
-    const angleDeg = Math.round((angleRad * 180) / Math.PI) +180;
+    const angleDeg = Math.round((angleRad * 180) / Math.PI) + 180;
     const realLocations = locations || colors.map((color, i) => (1 / (colors.length - 1)) * i);
     const colorStrings = colors.map((color, i) => `${color} ${Math.round(realLocations[i] * 100)}%`).join(', ');
     return (

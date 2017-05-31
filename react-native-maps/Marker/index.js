@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { View, Text } from 'react-native';
 
 export default class Marker extends Component {
 
@@ -42,9 +42,9 @@ export default class Marker extends Component {
           div.style.position = 'absolute';
           div.style.cursor = 'pointer';
 
-          if (typeof (self.args.marker_id) !== 'undefined') {
+          if (typeof (self.args.marker_id) !== 'undefined')
             div.dataset.marker_id = self.args.marker_id;
-          }
+
 
           google.maps.event.addDomListener(div, 'click', (event) => {
             google.maps.event.trigger(self, 'click');

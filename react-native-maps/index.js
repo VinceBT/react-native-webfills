@@ -1,12 +1,10 @@
-/*
- * @flow
- */
-import React, { Component, PropTypes } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
 import MapView from './MapView';
 import Marker from './Marker';
+import Polyline from './Polyline';
 
 MapView.Marker = Marker;
+MapView.Polyline = Polyline;
 
 export default MapView;
-export { Marker };
+export { Marker, Polyline };

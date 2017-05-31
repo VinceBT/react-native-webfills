@@ -1,6 +1,7 @@
-// @flow
-import React, { Component, PropTypes } from 'react';
-import { Animated, View, TouchableWithoutFeedback } from 'react-native';
+/* eslint-disable react/forbid-prop-types */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Animated, TouchableWithoutFeedback, View } from 'react-native';
 
 export default class DrawerLayout extends Component {
 
@@ -28,7 +29,7 @@ export default class DrawerLayout extends Component {
     open: false,
   };
 
-  _animValue: Animated.Value = new Animated.Value(0);
+  _animValue = new Animated.Value(0);
 
   openDrawer = () => {
     if (!this.state.open) {
@@ -38,11 +39,10 @@ export default class DrawerLayout extends Component {
   };
 
   closeDrawer = () => {
-    if (this.state.open) {
+    if (this.state.open)
       Animated.timing(this._animValue, { toValue: 0, duration: 200 }).start(() => {
         this.setState({ open: false });
       });
-    }
   };
 
   render() {
@@ -62,7 +62,8 @@ export default class DrawerLayout extends Component {
                 right: 0,
                 bottom: 0,
                 backgroundColor: 'rgba(0, 0, 0, .65)',
-                opacity: this._animValue }} />
+                opacity: this._animValue,
+              }} />
           </TouchableWithoutFeedback>
         )}
         {this.state.open && (
