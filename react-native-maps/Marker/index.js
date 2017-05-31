@@ -1,9 +1,5 @@
 /* eslint-disable no-undef */
-/*
- * global google document
- * eslint-env browser
- * @flow
- */
+
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { View, Text } from 'react-native';

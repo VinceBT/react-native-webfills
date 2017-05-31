@@ -1,8 +1,5 @@
 /* eslint-disable no-undef */
-/*
- * global google ReactDOM
- * @flow
- */
+
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { View } from 'react-native';
@@ -125,10 +122,8 @@ export default class MapView extends Component {
         });
       }
     });
-    console.log('after', this._currentMarkers.size, newCurrentChildren);
     for (const [key, marker] of this._currentMarkers)
       marker.setMap(null);
-
     this._currentMarkers = newCurrentChildren;
   };
 
