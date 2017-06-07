@@ -57,30 +57,32 @@ export default class MapView extends Component {
     this._map = new google.maps.Map(domNode, mapOptions);
     if (customMapStyle)
       this._map.setOptions({ styles: customMapStyle });
-
     this._map.addListener('drag', () => {
-      const center = this._map.getCenter();
-      const northEast = this._map.getBounds().getNorthEast();
-      const southWest = this._map.getBounds().getSouthWest();
-      this._currentRegion = {
-        latitude: center.lat(),
-        longitude: center.lng(),
-        latitudeDelta: Math.abs(northEast.lat() - southWest.lat()),
-        longitudeDelta: Math.abs(northEast.lng() - southWest.lng()),
-      };
-      if (this.props.onRegionChange) this.props.onRegionChange(this._currentRegion);
-      if (this.props.onPanDrag) this.props.onPanDrag();
+      this._updateCurrentRegion();
+      if (this.props.onRegionChange)
+        this.props.onRegionChange(this._currentRegion);
+      if (this.props.onPanDrag)
+        this.props.onPanDrag();
     });
-    if (this.props.onRegionChangeComplete)
-      this._map.addListener('idle', () => {
-        if (this._currentRegion) this.props.onRegionChangeComplete(this._currentRegion);
-      });
-
+    this._map.addListener('zoom_changed', () => {
+      this._updateCurrentRegion();
+      if (this.props.onRegionChange)
+        this.props.onRegionChange(this._currentRegion);
+      if (this.props.onRegionChangeComplete)
+        this.props.onRegionChangeComplete(this._currentRegion);
+    });
+    this._map.addListener('idle', () => {
+      this._updateCurrentRegion();
+      if (this.props.onRegionChangeComplete)
+        this.props.onRegionChangeComplete(this._currentRegion);
+    });
     this._updateChildren(this.props.children);
   }
 
   componentWillUpdate(nextProps, nextState) {
     this._updateChildren(nextProps.children);
+    if (nextProps.customMapStyle)
+      this._map.setOptions({ styles: nextProps.customMapStyle });
   }
 
   _map = null;
@@ -96,6 +98,18 @@ export default class MapView extends Component {
     this._map.setCenter(new google.maps.LatLng(region.latitude, region.longitude));
     this._map.setZoom(16);
   }
+
+  _updateCurrentRegion = () => {
+    const center = this._map.getCenter();
+    const northEast = this._map.getBounds().getNorthEast();
+    const southWest = this._map.getBounds().getSouthWest();
+    this._currentRegion = {
+      latitude: center.lat(),
+      longitude: center.lng(),
+      latitudeDelta: Math.abs(northEast.lat() - southWest.lat()),
+      longitudeDelta: Math.abs(northEast.lng() - southWest.lng()),
+    };
+  };
 
   _updateChildren = (nextChildren) => {
     nextChildren.forEach(child => {
@@ -124,10 +138,13 @@ export default class MapView extends Component {
       moveOnMarkerPress,
       style,
       children,
-      ...otherProps } = this.props;
+      ...otherProps
+    } = this.props;
     return (
       <View
-        ref={c => { this._mainView = c; }}
+        ref={c => {
+          this._mainView = c;
+        }}
         style={[style, {}]} {...otherProps}>
         {this._map && children.map(child => React.cloneElement(child, { gMap: this._map }))}
       </View>

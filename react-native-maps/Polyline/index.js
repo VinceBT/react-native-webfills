@@ -18,12 +18,10 @@ export default class Polyline extends Component {
     gMap: PropTypes.object,
   };
 
-  static defaultProps = {
-
-  };
+  static defaultProps = {};
 
   componentDidMount() {
-    const { coordinates, strokeWidth, strokeColor, lineCap, geodesic, gMap, onPress } = this.props;
+    const { coordinates, strokeWidth, strokeColor, lineCap, gMap, geodesic } = this.props;
     const formattedCoordinates = coordinates.map(coordinate => ({
       lat: coordinate.latitude,
       lng: coordinate.longitude,
@@ -37,15 +35,35 @@ export default class Polyline extends Component {
     });
     this._polyline.setMap(gMap);
     this._polyline.addListener('click', () => {
-      if (onPress) onPress();
+      if (this.props.onPress) this.props.onPress();
+    });
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { coordinates, strokeWidth, strokeColor, lineCap, geodesic } = nextProps;
+    const formattedCoordinates = coordinates.map(coordinate => ({
+      lat: coordinate.latitude,
+      lng: coordinate.longitude,
+    }));
+    this._polyline.setOptions({
+      path: formattedCoordinates,
+      geodesic,
+      strokeColor,
+      strokeOpacity: 1.0,
+      strokeWeight: strokeWidth,
     });
   }
 
   componentWillUnmount() {
-    this._polyline.setMap(null);
+    this._safeDeletePolyline();
   }
 
   _polyline = null;
+
+  _safeDeletePolyline = () => {
+    if (this._polyline)
+      this._polyline.setMap(null);
+  };
 
   render() {
     return null;
