@@ -1,4 +1,3 @@
-import React from 'react';
 import MapView from './MapView';
 import Marker from './Marker';
 import Polyline from './Polyline';
