@@ -79,7 +79,7 @@ export default class Marker extends Component {
       this._marker = new google.maps.Marker({
         position: { lat: latitude, lng: longitude },
         map: props.gMap,
-        title,
+        title: props.title,
       });
     }
     this._marker.addListener('click', () => {
