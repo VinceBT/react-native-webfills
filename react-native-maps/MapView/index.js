@@ -59,21 +59,21 @@ export default class MapView extends Component {
       this._map.setOptions({ styles: customMapStyle });
     this._map.addListener('drag', () => {
       this._updateCurrentRegion();
-      if (this.props.onRegionChange)
+      if (this.props.onRegionChange && this._currentRegion)
         this.props.onRegionChange(this._currentRegion);
       if (this.props.onPanDrag)
         this.props.onPanDrag();
     });
     this._map.addListener('zoom_changed', () => {
       this._updateCurrentRegion();
-      if (this.props.onRegionChange)
+      if (this.props.onRegionChange && this._currentRegion)
         this.props.onRegionChange(this._currentRegion);
-      if (this.props.onRegionChangeComplete)
+      if (this.props.onRegionChangeComplete && this._currentRegion)
         this.props.onRegionChangeComplete(this._currentRegion);
     });
     this._map.addListener('idle', () => {
       this._updateCurrentRegion();
-      if (this.props.onRegionChangeComplete)
+      if (this.props.onRegionChangeComplete && this._currentRegion)
         this.props.onRegionChangeComplete(this._currentRegion);
     });
     this._updateChildren(this.props.children);
@@ -100,7 +100,9 @@ export default class MapView extends Component {
   }
 
   _updateCurrentRegion = () => {
+    if (!this._map) return;
     const center = this._map.getCenter();
+    if (!this._map.getBounds()) return;
     const northEast = this._map.getBounds().getNorthEast();
     const southWest = this._map.getBounds().getSouthWest();
     this._currentRegion = {
