@@ -14,6 +14,12 @@ export default class MapView extends Component {
       latitudeDelta: PropTypes.number,
       longitudeDelta: PropTypes.number,
     }),
+    region: PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      latitudeDelta: PropTypes.number,
+      longitudeDelta: PropTypes.number,
+    }),
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
     onPress: PropTypes.func,
@@ -30,7 +36,7 @@ export default class MapView extends Component {
     toolbarEnabled: PropTypes.bool,
     moveOnMarkerPress: PropTypes.bool,
     customMapStyle: PropTypes.arrayOf(PropTypes.object),
-    children: PropTypes.arrayOf(PropTypes.node),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
     style: PropTypes.any,
   };
 
@@ -76,13 +82,13 @@ export default class MapView extends Component {
       if (this.props.onRegionChangeComplete && this._currentRegion)
         this.props.onRegionChangeComplete(this._currentRegion);
     });
-    this._updateChildren(this.props.children);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    this._updateChildren(nextProps.children);
     if (nextProps.customMapStyle)
       this._map.setOptions({ styles: nextProps.customMapStyle });
+    if (nextProps.region)
+      this.animateToRegion(nextProps.region, 0);
   }
 
   _map = null;
@@ -113,15 +119,10 @@ export default class MapView extends Component {
     };
   };
 
-  _updateChildren = (nextChildren) => {
-    nextChildren.forEach(child => {
-      child.props.gMap = this._map;
-    });
-  };
-
   render() {
     const {
       initialRegion,
+      region,
       onRegionChange,
       onRegionChangeComplete,
       onPanDrag,
@@ -148,7 +149,12 @@ export default class MapView extends Component {
           this._mainView = c;
         }}
         style={[style, {}]} {...otherProps}>
-        {this._map && children.map(child => React.cloneElement(child, { gMap: this._map }))}
+        {this._map &&
+        (Array.isArray(children) ? (
+            children.map(child => React.cloneElement(child, { gMap: this._map }))
+        ) : (
+          React.cloneElement(children, { gMap: this._map }))
+        )}
       </View>
     );
   }
