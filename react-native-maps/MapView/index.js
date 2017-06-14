@@ -149,7 +149,7 @@ export default class MapView extends Component {
           this._mainView = c;
         }}
         style={[style, {}]} {...otherProps}>
-        {this._map &&
+        {this._map && children &&
         (Array.isArray(children) ? (
             children.map(child => React.cloneElement(child, { gMap: this._map }))
         ) : (
