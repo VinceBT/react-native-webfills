@@ -97,12 +97,16 @@ export default class MapView extends Component {
 
   animateToCoordinate(coordinate, duration) {
     this._map.setCenter(new google.maps.LatLng(coordinate.latitude, coordinate.longitude));
-    this._map.setZoom(16);
   }
 
   animateToRegion(region, duration) {
     this._map.setCenter(new google.maps.LatLng(region.latitude, region.longitude));
-    this._map.setZoom(16);
+    const GLOBE_WIDTH = 256;
+    let angle = region.longitudeDelta;
+    if (angle < 0)
+      angle += 360;
+    const zoom = Math.round(Math.log((960 * 360) / angle / GLOBE_WIDTH) / Math.LN2);
+    this._map.setZoom(zoom);
   }
 
   _updateCurrentRegion = () => {
