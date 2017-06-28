@@ -5,6 +5,15 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { View } from 'react-native';
 
+const lngDeltaToZoom = (lngDelta) => {
+  const GLOBE_WIDTH = 256;
+  let angle = lngDelta;
+  if (angle < 0)
+    angle += 360;
+  const zoom = Math.round(Math.log((960 * 360) / angle / GLOBE_WIDTH) / Math.LN2);
+  return zoom;
+};
+
 export default class MapView extends Component {
 
   static propTypes = {
@@ -49,11 +58,10 @@ export default class MapView extends Component {
       disableDefaultUI: true,
     };
     if (initialRegion) {
-      const { latitude, longitude, latitudeDelta, longitudeDelta } = initialRegion;
+      const { latitude, longitude, longitudeDelta } = initialRegion;
       if (latitude !== null) mapOptions.center.lat = latitude;
       if (longitude !== null) mapOptions.center.lng = longitude;
-      if (latitudeDelta !== null && longitudeDelta !== null)
-        mapOptions.zoom = Math.max(0, Math.min(20, Math.floor(Math.min(latitudeDelta, longitudeDelta) * 300)));
+      if (longitudeDelta !== null) mapOptions.zoom = lngDeltaToZoom(longitudeDelta) + 1;
     }
     domNode.onresize = () => {
       const center = this._map.getCenter();
@@ -101,12 +109,7 @@ export default class MapView extends Component {
 
   animateToRegion(region, duration) {
     this._map.setCenter(new google.maps.LatLng(region.latitude, region.longitude));
-    const GLOBE_WIDTH = 256;
-    let angle = region.longitudeDelta;
-    if (angle < 0)
-      angle += 360;
-    const zoom = Math.round(Math.log((960 * 360) / angle / GLOBE_WIDTH) / Math.LN2);
-    this._map.setZoom(zoom);
+    this._map.setZoom(lngDeltaToZoom(region.longitudeDelta));
   }
 
   _updateCurrentRegion = () => {
@@ -156,8 +159,8 @@ export default class MapView extends Component {
         {this._map && children &&
         (Array.isArray(children) ? (
             children.map(child => React.cloneElement(child, { gMap: this._map }))
-        ) : (
-          React.cloneElement(children, { gMap: this._map }))
+          ) : (
+            React.cloneElement(children, { gMap: this._map }))
         )}
       </View>
     );
