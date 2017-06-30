@@ -2,7 +2,11 @@
 
 Webfills for useful packages of React Native so they can be used on [React Native Web](https://github.com/necolas/react-native-web)
 
-Currently supported :
+## Collaboration
+
+Feel free to make PRs to fix stuff or add new supported packaged
+
+## Currently supported
  - react-native-blur (Stub doing nothing)
  - react-native-drawer-layout (Fully working)
  - react-native-linear-gradient (Fully working)
@@ -19,8 +23,14 @@ NOTE: Add this line to your index.html before your bundle.js :
  ```
  - react-native-view-pager (Working without swipe gestures)
 
-This module is made to be cloned in a folder named webfills on your webpack project.
-Then add this to your config :
+## Usage
+This module is made to be cloned as a submodule named webfills in your webpack project.
+```sh
+git submodule add https://github.com/VinceBT/react-native-webfills.git webfills
+```
+
+Then add this to your webpack.config.js :
+
 ```
 const fs = require('fs');
 const path = require('path');
