@@ -6,6 +6,8 @@ export default class ViewPager extends Component {
 
   static propTypes = {
     initialPage: PropTypes.number,
+    onPageScroll: PropTypes.func,
+    onPageSelected: PropTypes.func,
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.element),
       PropTypes.element,
@@ -22,6 +24,16 @@ export default class ViewPager extends Component {
       activePage: 0,
     };
     this._animValue = new Animated.Value(props.initialPage);
+    this._animValue.addListener((anim) => {
+      if (this.props.onPageScroll) {
+        this.props.onPageScroll({
+          nativeEvent: {
+            position: Math.floor(anim.value),
+            offset: anim.value % 1,
+          },
+        });
+      }
+    });
   }
 
   componentDidMount() {
@@ -32,7 +44,7 @@ export default class ViewPager extends Component {
 
   setPage = (i) => {
     Animated.timing(this._animValue, {
-      duration: 200,
+      duration: 150,
       toValue: i,
     }).start();
   };
