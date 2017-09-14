@@ -1,10 +1,11 @@
 /* eslint-disable no-undef,func-names,react/no-unused-prop-types,react/forbid-prop-types */
 
 import React, { Component } from 'react';
+import { Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-export default class Marker extends Component {
+class Marker extends Component {
 
   static propTypes = {
     title: PropTypes.string,
@@ -97,3 +98,7 @@ export default class Marker extends Component {
   }
 
 }
+
+Marker.Animated = Animated.createAnimatedComponent(Marker);
+
+export default Marker;

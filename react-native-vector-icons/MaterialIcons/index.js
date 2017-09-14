@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-// Add <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> to the <head />
+/*
+<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ */
 
 const MaterialIcon = ({ name = 'android-arrow-back', color = '#000', size = 24, style = {} }) => {
   const actualName = name.replace('android-', '').split('-').join('_');

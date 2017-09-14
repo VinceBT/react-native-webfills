@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 const StubComponent = (props) => {
   return <View {...props} />;
@@ -8,7 +8,7 @@ const StubComponent = (props) => {
 export const Bar = StubComponent;
 export const Pie = StubComponent;
 export const Circle = StubComponent;
-export const CircleSnail = StubComponent;
+export const CircleSnail = (props) => { return <ActivityIndicator {...props} />; };
 
 const Progress = {
   Bar,

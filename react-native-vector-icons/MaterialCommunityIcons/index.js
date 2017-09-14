@@ -1,9 +1,14 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const MaterialCommunityIcon = ({ color = '#000', size = 24, style = {} }) => {
+/*
+<link href="//cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/2.0.46/css/materialdesignicons.min.css" rel="stylesheet">
+ */
+
+const MaterialCommunityIcon = ({ name = 'android-arrow-back', color = '#000', size = 24, style = {} }) => {
+  const actualName = name.replace('android-', '').split('_').join('-');
   return (
-    <Text style={{ fontSize: size, color, ...style }}>{'X'}</Text>
+    <Text className={`mdi mdi-${actualName}`} style={{ fontSize: size, color, ...style }} />
   );
 };
 

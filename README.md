@@ -11,17 +11,18 @@ Feel free to make PRs to fix stuff or add new supported packaged
  - react-native-drawer-layout (Fully working)
  - react-native-linear-gradient (Fully working)
  - react-native-maps (A bit glitchy, MapView, Marker, Circle and Polylines implemented)
+ 
 NOTE: Add this line to your index.html before your bundle.js :
 ```html
 <script src="//maps.google.com/maps/api/js?key=MYGOOGLEAPIKEY" type="text/javascript"></script>
 ```
+ - react-native-i18n (Working, just install i18n-js)
+ - react-native-photo-view (Stub, doing nothing)
  - react-native-modal-datetime-picker (Stub, doing nothing)
- - react-native-vector-icons (only MaterialIcons)
-  NOTE: Add this line to your index.html inside <head> tag :
- ```html
-<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- ```
- - react-native-view-pager (Fully Working without swipe gestures)
+ - react-native-vector-icons (only MaterialIcons and MaterialCommunityIcons)
+ 
+  NOTE: Respective instructions can be found in each index.js file
+ - react-native-view-pager (Fully Working without swipe gestures`obviously)
 
 ## Usage
 This module is made to be cloned as a submodule named webfills in your webpack project.
@@ -57,6 +58,7 @@ module.exports = {
   },
   ...
 }
+```
 
 ## License
 
