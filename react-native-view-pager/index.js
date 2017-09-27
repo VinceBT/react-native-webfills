@@ -18,12 +18,12 @@ export default class ViewPager extends Component {
     initialPage: 0,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      activePage: 0,
-    };
-    this._animValue = new Animated.Value(props.initialPage);
+  state = {
+    activePage: 0,
+  };
+
+  componentDidMount() {
+    window.addEventListener('resize', this._handleWindowResize);
     this._animValue.addListener((anim) => {
       if (this.props.onPageScroll) {
         this.props.onPageScroll({
@@ -36,10 +36,10 @@ export default class ViewPager extends Component {
     });
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', () => {
-      this.forceUpdate();
-    });
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._handleWindowResize);
+    clearTimeout(this._resizeTimeoutHandler);
+    this._animValue.removeAllListeners();
   }
 
   setPage = (i) => {
@@ -56,7 +56,15 @@ export default class ViewPager extends Component {
     }).start();
   };
 
-  _animValue = null;
+  _handleWindowResize = () => {
+    clearTimeout(this._resizeTimeoutHandler);
+    this._resizeTimeoutHandler = setTimeout(() => {
+      this.forceUpdate();
+    }, 300);
+  };
+
+  _resizeTimeoutHandler: ?number = null;
+  _animValue: Animated.Value = new Animated.Value(this.props.initialPage);
 
   render() {
     const nbChildren = this.props.children.length;
