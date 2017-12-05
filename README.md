@@ -7,22 +7,23 @@ Webfills for useful packages of React Native so they can be used on [React Nativ
 Feel free to make PRs to fix stuff or add new supported packaged
 
 ## Currently supported
- - react-native-blur (Stub, doing nothing)
- - react-native-drawer-layout (Fully working)
- - react-native-linear-gradient (Fully working)
- - react-native-maps (A bit glitchy, MapView, Marker, Circle and Polylines implemented)
+ - **react-native-blur** **=>** Stub, doing nothing
+ - **react-native-drawer-layout** **=>** Fully working
+ - **react-native-linear-gradient** **=>** Fully working
+ - **react-native-maps** **=>** A bit glitchy, MapView, Marker, Circle and Polylines implemented
  
 NOTE: Add this line to your index.html before your bundle.js :
 ```html
 <script src="//maps.google.com/maps/api/js?key=MYGOOGLEAPIKEY" type="text/javascript"></script>
 ```
- - react-native-i18n (Working, just install i18n-js)
- - react-native-photo-view (Stub, doing nothing)
- - react-native-modal-datetime-picker (Stub, doing nothing)
- - react-native-vector-icons (only MaterialIcons and MaterialCommunityIcons)
+ - **react-native-i18n** **=>** Working, just install i18n-js beside
+ - **react-native-photo-view** **=>** Stub, doing nothing
+ - **react-native-modal-datetime-picker** **=>** Stub, doing nothing
+ - **react-native-vector-icons** **=>** Only MaterialIcons and MaterialCommunityIcons
  
-  NOTE: Respective instructions can be found in each index.js file
- - react-native-view-pager (Fully Working without swipe gestures`obviously)
+  NOTE: Respective instructions can be found in each ```index.js``` file
+ - **react-native-view-pager** **=>** Fully working without swipe gestures`obviously
+  - **react-native-version-number** **=>** Fully working, instructions for setup in the ```index.js```)
 
 ## Usage
 This module is made to be cloned as a submodule named webfills in your webpack project.
