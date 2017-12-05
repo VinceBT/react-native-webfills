@@ -5,8 +5,6 @@
 const versionTag = (document && document.querySelector && document.querySelector('meta[name=version]')) || null;
 const buildTag = (document && document.querySelector && document.querySelector('meta[name=build]')) || null;
 
-console.log(versionTag, buildTag)
-
 export const appVersion = (versionTag && versionTag.getAttribute('content')) || '';
 export const buildVersion = (buildTag && buildTag.getAttribute('content')) || '';
 
