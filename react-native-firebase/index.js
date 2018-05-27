@@ -2,7 +2,8 @@ const firebase = {
   messaging() {
     return {
       getToken() {
-        return "STUB";
+        console.warn('Warning: the token delivered is just a stub and will not work by any mean');
+        return 'a'.repeat(11) + ':' + 'a'.repeat(140);
       },
       requestPermissions() {
         // Nothing
